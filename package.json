@@ -1,0 +1,104 @@
+{
+  "name": "wc",
+  "displayName": "VSCode for Web with StackBlitz Webcontainer",
+  "description": "Test for feasibility",
+  "version": "0.0.1",
+  "publisher": "jgtest",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.59.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onFileSystem:wc",
+    "onCommand:wc.loadStackBlitz",
+    "onCommand:wc.init",
+    "onCommand:wc.bootContainer"
+  ],
+  "browser": "./out/src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "wc.loadStackBlitz",
+        "title": "Load Webcontainer global",
+        "category": "Webcontainer"
+      },
+      {
+        "command": "wc.bootContainer",
+        "title": "Start Webcontainer",
+        "category": "Webcontainer"
+      },
+      {
+        "command": "wc.deleteFile",
+        "title": "Delete \"file.txt\"",
+        "category": "Webcontainer"
+      },
+      {
+        "command": "wc.addFile",
+        "title": "Add \"file.txt\"",
+        "category": "Webcontainer"
+      },
+      {
+        "command": "wc.addFiles",
+        "title": "Add a tree of files",
+        "category": "Webcontainer"
+      },
+      {
+        "command": "wc.killContainer",
+        "title": "Destroy Webcontainer",
+        "category": "Webcontainer"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "wc.bootContainer",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "wc.killContainer",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "wc.deleteFile",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "wc.addFile",
+          "when": "workbenchState == workspace"
+        },
+        {
+          "command": "wc.loadStackBlitz",
+          "when": "workbenchState != workspace"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "compile-web": "webpack",
+    "watch-web": "webpack --watch",
+    "package-web": "webpack --mode production --devtool hidden-source-map",
+    "watch": "tsc -watch -p ./",
+    "browser": "vscode-test-web --extensionDevelopmentPath=. ."
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@types/vscode": "^1.32.0",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "@vscode/test-web": "^0.0.24",
+    "@webcontainer/api": "^0.0.3",
+    "eslint": "^8.13.0",
+    "path": "^0.12.7",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.2",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  }
+}
