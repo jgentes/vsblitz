@@ -4,7 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 
-import * as path from 'path';
 import * as vscode from 'vscode';
 
 //Type 'FileSystemAPI' is missing the following properties from type 'FileSystemProvider'
@@ -81,7 +80,7 @@ export class Wc implements vscode.FileSystemProvider {
     }
 
     writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean, overwrite: boolean }): void {
-        const basename = path.posix.basename(uri.path);
+        const basename = uri.path;
         const parent = this._lookupParentDirectory(uri);
         let entry = parent.entries.get(basename);
         if (entry instanceof Directory) {
@@ -117,7 +116,7 @@ export class Wc implements vscode.FileSystemProvider {
         const oldParent = this._lookupParentDirectory(oldUri);
 
         const newParent = this._lookupParentDirectory(newUri);
-        const newName = path.posix.basename(newUri.path);
+        const newName = newUri.path;
 
         oldParent.entries.delete(entry.name);
         entry.name = newName;
@@ -130,8 +129,8 @@ export class Wc implements vscode.FileSystemProvider {
     }
 
     delete(uri: vscode.Uri): void {
-        const dirname = uri.with({ path: path.posix.dirname(uri.path) });
-        const basename = path.posix.basename(uri.path);
+        const dirname = uri.with({ path: uri.path });
+        const basename = uri.path;
         const parent = this._lookupAsDirectory(dirname, false);
         if (!parent.entries.has(basename)) {
             throw vscode.FileSystemError.FileNotFound(uri);
@@ -143,8 +142,8 @@ export class Wc implements vscode.FileSystemProvider {
     }
 
     createDirectory(uri: vscode.Uri): void {
-        const basename = path.posix.basename(uri.path);
-        const dirname = uri.with({ path: path.posix.dirname(uri.path) });
+        const basename = uri.path;
+        const dirname = uri.with({ path: uri.path });
         const parent = this._lookupAsDirectory(dirname, false);
 
         const entry = new Directory(basename);
@@ -198,7 +197,7 @@ export class Wc implements vscode.FileSystemProvider {
     }
 
     private _lookupParentDirectory(uri: vscode.Uri): Directory {
-        const dirname = uri.with({ path: path.posix.dirname(uri.path) });
+        const dirname = uri.with({ path: uri.path });
         return this._lookupAsDirectory(dirname, false);
     }
 

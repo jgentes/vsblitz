@@ -4,9 +4,63 @@ import * as vscode from 'vscode'
 import { Wc } from './fileSystemProvider'
 import { load } from '@webcontainer/api'
 
-export function activate(context: vscode.ExtensionContext) {
-  console.log('Webcontainer says "Hello"')
+let deactivate
+
+const activate = (context: vscode.ExtensionContext) => {
+  console.log('Webcontainer extension activated!')
   const wc = new Wc()
+
+  // Track currently webview panel
+let currentPanel: vscode.WebviewPanel | undefined = undefined;
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wc.loadStackBlitz', async _ => {
+      const columnToShowIn = vscode.window.activeTextEditor
+        ? vscode.window.activeTextEditor.viewColumn
+        : undefined;
+
+        if (currentPanel) {
+          // If we already have a panel, show it in the target column
+          currentPanel.reveal(columnToShowIn);
+        } else {
+          // Otherwise, create a new panel
+
+      // Create and show a new webview
+      currentPanel = vscode.window.createWebviewPanel(
+        'stackblitz', // Identifies the type of the webview. Used internally
+        'StackBlitz', // Title of the panel displayed to the user
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+        {enableScripts: true} // Webview options.
+      );
+
+      // And set its HTML content
+      currentPanel.webview.html = getWebviewContent();
+        }
+/*
+      try {
+        const wcReady = await load()
+        console.log('Webcontainer extension loaded!')
+        console.log({ wcReady })
+        const webc = await wcReady.boot()
+        console.log('Webcontainer extension booting!')
+        console.log({ webc })
+        deactivate = () => {          
+          webc.teardown()
+          if (currentPanel) currentPanel.dispose()
+        }
+        
+        vscode.workspace.updateWorkspaceFolders(0, 0, {
+          uri: vscode.Uri.parse('wc:/'),
+          name: 'Webcontainer',
+        })
+      } catch (e) {
+        console.error(e)
+      }
+
+      currentPanel.onDidDispose(() => deactivate())
+  */    
+    })
+  )
 
   context.subscriptions.push(
     vscode.workspace.registerFileSystemProvider('wc', wc, {
@@ -83,23 +137,17 @@ export function activate(context: vscode.ExtensionContext) {
         memFs.writeFile(vscode.Uri.parse(`memfs:/xyz/def/foo.bin`), Buffer.from([0, 0, 0, 1, 7, 0, 0, 1, 1]), { create: true, overwrite: true });
         */
     })
-  )
-
-  context.subscriptions.push(
-    vscode.commands.registerCommand('wc.loadStackBlitz', async _ => {
-      const wcReady = await load()
-      console.log({ wcReady })
-      vscode.workspace.updateWorkspaceFolders(0, 0, {
-        uri: vscode.Uri.parse('wc:/'),
-        name: 'Webcontainer',
-      })
-    })
-  )
+  )  
 }
 
-export function deactivate() {}
+const getWebviewContent = () => {
+  // GET DOCUMENT AND PASS IT BACK
+  return `<!DOCTYPE html>
+<script> console.log({window}); console.log({document}) </script>
+</html>`;
+}
 
-function randomData(lineCnt: number, lineLen = 155): Buffer {
+const randomData = (lineCnt: number, lineLen = 155): Buffer => {
   const lines: string[] = []
   for (let i = 0; i < lineCnt; i++) {
     let line = ''
@@ -112,3 +160,5 @@ function randomData(lineCnt: number, lineLen = 155): Buffer {
   }
   return Buffer.from(lines.join('\n'), 'utf8')
 }
+
+export { activate, deactivate}

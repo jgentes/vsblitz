@@ -1,21 +1,27 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "npm",
-      "script": "compile-web",
-      "group": {
-        "kind": "build",
-        "isDefault": true
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "npm",
+        "script": "compile",
+        "group": {
+          "kind": "build"
+        },
+        "problemMatcher": "$esbuild"
       },
-      "problemMatcher": ["$ts-webpack", "$tslint-webpack"]
-    },
-    {
-      "type": "npm",
-      "script": "watch-web",
-      "group": "build",
-      "isBackground": true,
-      "problemMatcher": ["$ts-webpack-watch", "$tslint-webpack-watch"]
-    }
-  ]
-}
+      {
+        "type": "npm",
+        "script": "esbuild-watch",
+        "presentation": {
+          "panel": "dedicated",
+          "reveal": "never"
+        },
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "isBackground": true,
+        "problemMatcher": "$esbuild-watch"
+      }
+    ]
+  }

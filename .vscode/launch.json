@@ -7,11 +7,14 @@
       "debugWebWorkerHost": true,
       "request": "launch",
       "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionDevelopmentPath=${workspaceRoot}",
         "--extensionDevelopmentKind=web"
       ],
-      "outFiles": ["${workspaceFolder}/out/src/*.js"],
-      "preLaunchTask": "npm: watch-web"
+      "outFiles": ["${workspaceRoot}/out/*.js"],
+      "preLaunchTask": {
+        "type": "npm",
+        "script": "esbuild-watch"
+      }
     }
   ]
 }

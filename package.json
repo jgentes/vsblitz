@@ -1,9 +1,9 @@
 {
-  "name": "wc",
+  "name": "wc2",
   "displayName": "VSCode for Web with StackBlitz Webcontainer",
   "description": "Test for feasibility",
   "version": "0.0.1",
-  "publisher": "jgtest",
+  "publisher": "jgtest2",
   "private": true,
   "license": "MIT",
   "engines": {
@@ -14,11 +14,9 @@
   ],
   "activationEvents": [
     "onFileSystem:wc",
-    "onCommand:wc.loadStackBlitz",
-    "onCommand:wc.init",
-    "onCommand:wc.bootContainer"
+    "onCommand:wc.loadStackBlitz"
   ],
-  "browser": "./out/src/extension.js",
+  "browser": "./out/extension.js",
   "contributes": {
     "commands": [
       {
@@ -81,24 +79,20 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
-    "compile-web": "webpack",
-    "watch-web": "webpack --watch",
-    "package-web": "webpack --mode production --devtool hidden-source-map",
+    "esbuild-source": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --sourcemap",
+    "esbuild-watch": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --sourcemap --watch",
     "watch": "tsc -watch -p ./",
-    "browser": "vscode-test-web --extensionDevelopmentPath=. ."
+    "browser": "npm run esbuild-source && vscode-test-web --port=8080 --open-devtools --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
-    "@types/node": "^16.11.7",
-    "@types/vscode": "^1.32.0",
+    "@types/node": "^18.0.5",
+    "@types/vscode": "^1.59.0",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "@vscode/test-web": "^0.0.24",
     "@webcontainer/api": "^0.0.3",
+    "esbuild": "^0.14.49",
     "eslint": "^8.13.0",
-    "path": "^0.12.7",
-    "ts-loader": "^9.3.1",
-    "typescript": "^4.7.2",
-    "webpack": "^5.73.0",
-    "webpack-cli": "^4.10.0"
+    "typescript": "^4.7.2"
   }
 }
