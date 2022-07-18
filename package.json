@@ -14,18 +14,19 @@
   ],
   "activationEvents": [
     "onFileSystem:wc",
-    "onCommand:wc.loadStackBlitz"
+    "onCommand:wc.loadWebContainer",
+    "onCommand:wc.bootWebContainer"
   ],
-  "browser": "./out/extension.js",
+  "browser": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "wc.loadStackBlitz",
+        "command": "wc.loadWebContainer",
         "title": "Load Webcontainer global",
         "category": "Webcontainer"
       },
       {
-        "command": "wc.bootContainer",
+        "command": "wc.bootWebContainer",
         "title": "Start Webcontainer",
         "category": "Webcontainer"
       },
@@ -53,10 +54,6 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "wc.bootContainer",
-          "when": "workbenchState == workspace"
-        },
-        {
           "command": "wc.killContainer",
           "when": "workbenchState == workspace"
         },
@@ -69,7 +66,7 @@
           "when": "workbenchState == workspace"
         },
         {
-          "command": "wc.loadStackBlitz",
+          "command": "wc.loadWebContainer",
           "when": "workbenchState != workspace"
         }
       ]
@@ -79,8 +76,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
-    "esbuild-source": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --sourcemap",
-    "esbuild-watch": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --sourcemap --watch",
+    "esbuild-source": "esbuild extension=./src/extension.ts  main=./src/main.js --bundle --outdir=dist --external:vscode --format=cjs --sourcemap",
+    "esbuild-watch": "esbuild extension=./src/extension.ts  main=./src/main.js --bundle --outdir=dist --external:vscode --format=cjs --sourcemap --watch",
     "watch": "tsc -watch -p ./",
     "browser": "npm run esbuild-source && vscode-test-web --port=8080 --open-devtools --extensionDevelopmentPath=. ."
   },

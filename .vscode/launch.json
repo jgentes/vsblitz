@@ -8,9 +8,10 @@
       "request": "launch",
       "args": [
         "--extensionDevelopmentPath=${workspaceRoot}",
-        "--extensionDevelopmentKind=web"
+        "--extensionDevelopmentKind=web",
+        "--enable-features=SharedArrayBuffer"
       ],
-      "outFiles": ["${workspaceRoot}/out/*.js"],
+      "outFiles": ["${workspaceRoot}/dist/*.js"],
       "preLaunchTask": {
         "type": "npm",
         "script": "esbuild-watch"
