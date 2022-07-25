@@ -2,6 +2,7 @@
 // It cannot access the main VS Code APIs directly.
 import { load } from '@webcontainer/api';
 
+
 (async function () {
     let WebContainer
     const vscode = acquireVsCodeApi();

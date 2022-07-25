@@ -64,10 +64,6 @@
         {
           "command": "wc.addFile",
           "when": "workbenchState == workspace"
-        },
-        {
-          "command": "wc.loadWebContainer",
-          "when": "workbenchState != workspace"
         }
       ]
     }
